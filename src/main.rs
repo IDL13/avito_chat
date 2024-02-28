@@ -1,8 +1,4 @@
-use sqlx::postgres::PgPoolOptions;
-use axum::{
-    http::StatusCode, response::{IntoResponse, Response}, routing::{get, post}, Json, Router};
-use serde_json::{Value, json};
-use sqlx::Error;
+use axum::{routing::{get, post}, Router};
 
 mod handlers;
 mod postgres_db;

@@ -1,8 +1,6 @@
-use axum::{
-    http::StatusCode, response::{IntoResponse, Response}, routing::{get, post}, Json, Router};
-use serde_json::{Value, json};
+use axum::Json;
 
-use super::{models::{ApiResponse, User}};
+use super::models::{ApiResponse, User};
 
 pub async fn test() -> ApiResponse {
     ApiResponse::JsonDataStr("[SERVER START]")
