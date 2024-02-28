@@ -31,16 +31,16 @@ pub struct User {
 #[derive(Serialize, Deserialize)]
 pub struct Chat {
     pub id: Option<i32>,
-    pub name: String,
-    pub users: String,
+    pub name: Option<i32>,
+    pub users: Option<Vec<i32>>,
     pub created_at: String,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Message {
     pub id: Option<i32>,
-    pub chat: String,
-    pub author: String,
+    pub chat: Option<i32>,
+    pub author: Option<i32>,
     pub text: String,
     pub created_at: String,
 }
