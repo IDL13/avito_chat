@@ -4,8 +4,6 @@ use serde_json::json;
 use serde::{Serialize, Deserialize};
 
 pub enum ApiResponse {
-    OK,
-    Create,
     JsonDataStr(&'static str),
     JsonDataI32(i32)
 }
@@ -13,8 +11,6 @@ pub enum ApiResponse {
 impl IntoResponse for ApiResponse {
     fn into_response(self) -> Response {
         match self {
-            Self::OK => (StatusCode::OK).into_response(),
-            Self::Create => (StatusCode::CREATED).into_response(),
             Self::JsonDataStr(data) => (StatusCode::OK, Json(json!({"msg":data}))).into_response(),
             Self::JsonDataI32(data) => (StatusCode::OK, Json(json!({"msg":data}))).into_response()
         }
@@ -25,15 +21,13 @@ impl IntoResponse for ApiResponse {
 pub struct User {
     pub id: Option<i32>,
     pub username: String,
-    pub created_at: String,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Chat {
     pub id: Option<i32>,
-    pub name: Option<i32>,
+    pub name: String,
     pub users: Option<Vec<i32>>,
-    pub created_at: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -42,5 +36,4 @@ pub struct Message {
     pub chat: Option<i32>,
     pub author: Option<i32>,
     pub text: String,
-    pub created_at: String,
 }
