@@ -1,22 +1,21 @@
-use axum::{
-    http::StatusCode, response::{IntoResponse, Response}, routing::{get, post}, Json, Router};
-use serde_json::{Value, json};
+use axum::{http::StatusCode, response::{IntoResponse, Response}, Json};
+use serde_json::json;
 use serde::{Serialize, Deserialize};
 
 pub enum ApiResponse {
-    OK,
-    Create,
     JsonDataStr(&'static str),
-    JsonDataI32(i32)
+    JsonDataI32(i32),
+    JsonChats(Vec<ChatResp>),
+    JsonMessages(Vec<MessageResp>)
 }
 
 impl IntoResponse for ApiResponse {
     fn into_response(self) -> Response {
         match self {
-            Self::OK => (StatusCode::OK).into_response(),
-            Self::Create => (StatusCode::CREATED).into_response(),
             Self::JsonDataStr(data) => (StatusCode::OK, Json(json!({"msg":data}))).into_response(),
-            Self::JsonDataI32(data) => (StatusCode::OK, Json(json!({"msg":data}))).into_response()
+            Self::JsonDataI32(data) => (StatusCode::OK, Json(json!({"msg":data}))).into_response(),
+            Self::JsonChats(data) => (StatusCode::OK, Json(json!({"msg":data}))).into_response(),
+            Self::JsonMessages(data) => (StatusCode::OK, Json(json!({"msg":data}))).into_response(),
         }
     }
 }
@@ -25,22 +24,41 @@ impl IntoResponse for ApiResponse {
 pub struct User {
     pub id: Option<i32>,
     pub username: String,
-    pub created_at: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct UserGet {
+    pub user: Option<i32>
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Chat {
     pub id: Option<i32>,
     pub name: String,
-    pub users: String,
-    pub created_at: String,
+    pub users: Option<Vec<i32>>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ChatGet {
+    pub chat: Option<i32>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ChatResp {
+    pub id: Option<i32>,
+    pub name: String,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Message {
     pub id: Option<i32>,
-    pub chat: String,
-    pub author: String,
+    pub chat: Option<i32>,
+    pub author: Option<i32>,
     pub text: String,
-    pub created_at: String,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct MessageResp {
+    pub text: String,
+}
+
