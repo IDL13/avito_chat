@@ -20,6 +20,16 @@ pub async fn add_new_user(Json(json): Json<User>) -> ApiResponse {
     ApiResponse::JsonDataI32(row.0)
 }
 
+pub async fn drop_user(Json(json): Json<UserGet>) -> ApiResponse {
+    let pool = crate::postgres_db::connection().await;
+
+    let _ = sqlx::query("DELETE FROM Users WHERE id = $1")
+        .bind(json.user)
+        .fetch(&pool);
+
+    ApiResponse::JsonDataStr("OK")
+}
+
 pub async fn chats_add(Json(json): Json<Chat>) -> ApiResponse {
     let pool = crate::postgres_db::connection().await;
 
@@ -31,6 +41,16 @@ pub async fn chats_add(Json(json): Json<Chat>) -> ApiResponse {
     .expect("Error from add chat in db");
 
     ApiResponse::JsonDataI32(row.0)
+}
+
+pub async fn drop_chat(Json(json): Json<ChatGet>) -> ApiResponse {
+    let pool = crate::postgres_db::connection().await;
+
+    let _ = sqlx::query("DELETE FROM Chat WHERE id = $1")
+        .bind(json.chat)
+        .fetch(&pool);
+
+    ApiResponse::JsonDataStr("OK")
 }
 
 pub async fn messages_add(Json(json): Json<Message>) -> ApiResponse {

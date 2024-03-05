@@ -9,5 +9,7 @@ pub use handlers:: {
     chats_add,
     chats_get,
     messages_add,
-    messages_get
+    messages_get,
+    drop_user,
+    drop_chat
 };
